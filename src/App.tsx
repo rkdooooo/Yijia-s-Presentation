@@ -265,8 +265,11 @@ const slides: SlideDef[] = [
       <Archive number={8} section="spatial environmental analysis">
         <h2>GIScience lets me integrate environmental processes across heterogeneous landscapes</h2>
         <div className="spatial-images"><figure><ZoomImage src={asset("images/white-roof.png")} alt="White-roof suitability GIS story map" /></figure><figure><ZoomImage src={asset("images/transit-dashboard.png")} alt="Transit Comfort Dashboard" /></figure></div>
-        <div className="spatial-ideas"><article><b>URBAN ENVIRONMENT</b><h3>White-roof suitability<br />Urban shading and geometry</h3></article><article><b>DATA INTEGRATION</b><h3>Real-time environmental<br />and human-activity data</h3></article><article><b>TRANSFERABLE LOGIC</b><h3>Scale · heterogeneity<br />context · uncertainty</h3></article></div>
-        <p className="spatial-bottom">These tools can support flux-network synthesis by linking site dynamics to ecological and hydroclimatic context.</p>
+        <div className="project-links" aria-label="Project links">
+          <a href="https://storymaps.arcgis.com/stories/ad00ba5e725049c5bf6ddae11451650d" target="_blank" rel="noreferrer"><span>WHITE-ROOF SUITABILITY</span><b>ArcGIS StoryMap</b><i>↗</i></a>
+          <a href="https://sites.google.com/view/ge5219-transitcomfort" target="_blank" rel="noreferrer"><span>TRANSIT COMFORT</span><b>Project website</b><i>↗</i></a>
+          <a href="https://nusgis.org/2026/05/14/congratulations-to-team-urbanflow-from-nus-for-winning-the-excellence-award-at-asean-geospatial-challenge-2026/" target="_blank" rel="noreferrer"><span>ASEAN GEOSPATIAL CHALLENGE</span><b>NUS GIS news</b><i>↗</i></a>
+        </div>
       </Archive>
     ),
   },

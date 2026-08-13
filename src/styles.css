@@ -123,13 +123,15 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .cesm-response { left: 31%; bottom: 0; width: 40%; height: 39%; transform: rotate(-.8deg); }
 .cesm-nfix { right: 0; bottom: 0; width: 24%; height: 39%; transform: rotate(1deg); }
 
-.spatial-images { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3%; height: 39%; }
+.spatial-images { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3%; flex: 1; min-height: 0; }
 .spatial-images figure { margin: 0; overflow: hidden; }
 .spatial-images img { width: 100%; height: 100%; object-fit: cover; }
-.spatial-ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; margin-top: 2.2%; }
-.spatial-ideas b { color: var(--blue); font: 700 clamp(.6rem, .72vw, .8rem) var(--mono); }
-.spatial-ideas h3 { font-size: clamp(.9rem, 1.5vw, 1.65rem); line-height: 1.12; margin-top: .65rem; margin-bottom: .65rem; }
-.spatial-bottom { border-top: 1px solid var(--faint); padding-top: .7rem; margin-top: 0; color: var(--muted); font-size: clamp(.66rem, .88vw, .98rem); }
+.project-links { flex: 0 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3%; margin-top: clamp(.8rem, 2vh, 1.4rem); }
+.project-links a { position: relative; display: grid; gap: .3rem; min-width: 0; border-top: 2px solid var(--blue); padding: clamp(.55rem, 1.2vh, .85rem) 2.1rem 0 0; color: var(--ink); text-decoration: none; }
+.project-links span { color: var(--blue); font: 700 clamp(.52rem, .66vw, .72rem)/1.15 var(--mono); letter-spacing: .05em; }
+.project-links b { overflow: hidden; font: 700 clamp(.78rem, 1vw, 1.1rem)/1.2 var(--serif); text-overflow: ellipsis; white-space: nowrap; }
+.project-links i { position: absolute; right: .1rem; top: .52rem; color: var(--blue); font: normal 1.1rem var(--sans); transition: transform .2s ease; }
+.project-links a:hover i, .project-links a:focus-visible i { transform: translate(.18rem, -.18rem); }
 
 .motivation-layout { position: relative; flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr .8fr; grid-template-rows: 1fr auto; gap: clamp(1.2rem, 3vw, 3.5rem); }
 .motivation-story h2 { font-size: clamp(2rem, 3.6vw, 4.3rem); max-width: 16ch; }
@@ -246,7 +248,9 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
   .flux-gallery__detail { display: block; }
   .flux-gallery__detail figcaption { display: none; }
   .flux-caption { font-size: .64rem; }
-  .spatial-ideas h3 { font-size: .8rem; }
+  .project-links { gap: 2%; }
+  .project-links a { padding-right: 1.2rem; }
+  .project-links b { font-size: .68rem; }
   .fit-columns { margin-top: 4vh; }
   .fit-columns article { padding: 0 .8rem; }
   .fit-bridge { gap: 3%; }
