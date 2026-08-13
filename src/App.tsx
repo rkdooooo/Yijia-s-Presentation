@@ -1,0 +1,414 @@
+"use client";
+
+/* eslint-disable @next/next/no-img-element */
+
+import { ChangeEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+
+type SlideDef = {
+  id: string;
+  label: string;
+  title: string;
+  notes: string[];
+  content: ReactNode;
+};
+
+const projectUrl =
+  "https://www.egu.eu/jobs/8245/phd-project-water-use-strategies-of-global-tree-grass-savannas-during-drying-and-rewetting-soils/";
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+
+function PhotoSlot({ storageKey, compact = false }: { storageKey: string; compact?: boolean }) {
+  const [src, setSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(storageKey);
+    if (stored) window.setTimeout(() => setSrc(stored), 0);
+  }, [storageKey]);
+
+  function choosePhoto(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const value = String(reader.result);
+      setSrc(value);
+      try {
+        window.localStorage.setItem(storageKey, value);
+      } catch {
+        // Large photos can still be previewed for this session.
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  return (
+    <label className={`photo-slot ${compact ? "photo-slot--compact" : ""} ${src ? "photo-slot--filled" : ""}`}>
+      {src ? <img src={src} alt="User-selected course fieldwork" /> : null}
+      <span className="photo-slot__copy">
+        <b>{src ? "Replace photo" : compact ? "Add course photo" : "Add atmospheric measurement photo"}</b>
+        <small>{src ? "Click to choose another image" : "Click to choose from this device"}</small>
+      </span>
+      <input type="file" accept="image/*" onChange={choosePhoto} />
+    </label>
+  );
+}
+
+function Archive({ number, section, children }: { number: number; section: string; children: ReactNode }) {
+  return (
+    <div className="archive-shell">
+      <header className="archive-header">
+        <span>Y.X. / {String(number).padStart(2, "0")} / 2026</span>
+        <span>{section}</span>
+      </header>
+      <div className="archive-content">{children}</div>
+      <footer className="archive-footer">
+        <span>FIELD / FLUX / SCALE</span>
+        <span>{String(number).padStart(2, "0")}</span>
+      </footer>
+    </div>
+  );
+}
+
+const slides: SlideDef[] = [
+  {
+    id: "introduction",
+    label: "Introduction",
+    title: "Yijia (Ricardo) Xie",
+    notes: [
+      "Good morning, and thank you for the opportunity to introduce myself.",
+      "I am Yijia Xie. The thread connecting my experience is learning how field observations, ecosystem-atmosphere exchange, and spatial or Earth-system modelling can answer environmental questions across scales.",
+      "I will focus on the parts of my background most relevant to the savanna water-use project.",
+    ],
+    content: (
+      <div className="cover">
+        <div className="cover__copy">
+          <p className="eyebrow">PRE-INTERVIEW / 2026</p>
+          <h1>Yijia <i>(Ricardo)</i> Xie</h1>
+          <p className="cover__thesis">Field observations, ecosystem fluxes, and environmental modelling across scales</p>
+          <div className="blue-rule" />
+          <p className="cover__meta">M.Sc. Applied GIS · National University of Singapore<br />B.Sc. Geographical Sciences · University of British Columbia</p>
+          <p className="cover__foot">PhD project · Water-use strategies of tree-grass savannas</p>
+        </div>
+        <figure className="cover__visual">
+          <img src={asset("images/zine-cover.png")} alt="A zine-style savanna tree, flux tower and soil profile" />
+          <figcaption>field / flux / scale</figcaption>
+        </figure>
+      </div>
+    ),
+  },
+  {
+    id: "identity",
+    label: "Research identity",
+    title: "Field observation + spatial and process-based analysis",
+    notes: [
+      "My formal training is in geography and GIScience, but my research identity is broader than GIS alone.",
+      "I have learned to observe processes in the field, analyse spatial patterns, and use models to test mechanisms at larger scales.",
+      "That combination is why this project feels like a natural next step.",
+    ],
+    content: (
+      <Archive number={2} section="research identity">
+        <div className="identity-grid">
+          <figure className="portrait-paper"><img src={asset("images/portrait.jpeg")} alt="Portrait of Yijia Xie" /></figure>
+          <div className="identity-copy">
+            <p className="eyebrow">ONE RESEARCH IDENTITY</p>
+            <h2>I connect field observation with spatial and process-based analysis</h2>
+            <div className="four-ideas">
+              <article><b>OBSERVE</b><p>Ecosystem–atmosphere measurements and environmental field methods</p></article>
+              <article><b>ANALYSE</b><p>GIScience, remote sensing, and spatial statistics</p></article>
+              <article><b>MODEL</b><p>Urban microclimate and Earth-system simulations</p></article>
+              <article><b>INTEGRATE</b><p>Carbon, water, climate, and environmental data</p></article>
+            </div>
+            <p className="takeaway">Goal: explain environmental processes without losing their spatial context.</p>
+          </div>
+        </div>
+      </Archive>
+    ),
+  },
+  {
+    id: "route",
+    label: "Research route",
+    title: "A research route across scales",
+    notes: [
+      "This timeline is the simplest way to explain how my interests developed.",
+      "My undergraduate training built the physical geography and atmospheric-science foundation. Micrometeorology made environmental processes tangible at the ecosystem scale.",
+      "At NUS and A*STAR, I added spatial and computational modelling. I now want to bring these scales together around ecosystem water use.",
+    ],
+    content: (
+      <Archive number={3} section="research route">
+        <h2>Each stage added a new scale to the same environmental question</h2>
+        <div className="timeline">
+          {[
+            ["2021–25", "UBC Geography", "Physical geography", "GIScience", "Atmospheric science"],
+            ["2023–25", "Micrometeorology Lab", "Chamber fluxes", "Eddy covariance", "Wetland field sites"],
+            ["2025–26", "NUS + A*STAR", "Spatial modelling", "CESM2", "Environmental integration"],
+            ["2026 →", "Savanna ecohydrology", "Water-use strategies", "Drying–rewetting", "Cross-site synthesis"],
+          ].map((item, index) => (
+            <article key={item[1]} className={index === 3 ? "timeline__item timeline__item--future" : "timeline__item"}>
+              <span className="timeline__year">{item[0]}</span><i />
+              <h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p>
+            </article>
+          ))}
+        </div>
+        <div className="degree-notes"><span>B.Sc. 81.1% · Graduated with Distinction</span><span>M.Sc. GPA 5.0 / 5.0</span></div>
+      </Archive>
+    ),
+  },
+  {
+    id: "field-course",
+    label: "Field course",
+    title: "What a dataset means on the ground",
+    notes: [
+      "This was an undergraduate geographical sciences field course.",
+      "The main lesson was not a single instrument. It was learning how a field site, sampling design, and practical constraints shape the data we later analyse.",
+      "Photo suggestion: choose an authentic field-course photo showing you taking measurements or working with the group. Add the course location and year if you remember them.",
+    ],
+    content: (
+      <Archive number={4} section="undergraduate field course">
+        <h2>Fieldwork taught me to ask what a dataset means on the ground</h2>
+        <div className="field-layout">
+          <figure className="field-main"><img src={asset("images/field-forest.png")} alt="Yijia observing a forest environment during fieldwork" /></figure>
+          <div className="field-copy">
+            <p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p>
+            <h3>Field observation<br />Sampling design<br />Team logistics</h3>
+            <div className="blue-rule" />
+            <p>I learned to connect landscape context, measurement choices, and interpretation — not treat field data as detached numbers.</p>
+            <PhotoSlot storageKey="yijia-field-course-photo" compact />
+          </div>
+        </div>
+      </Archive>
+    ),
+  },
+  {
+    id: "atmospheric-science",
+    label: "Atmospheric science",
+    title: "Hands-on atmospheric measurements",
+    notes: [
+      "This undergraduate atmospheric science training was very hands-on.",
+      "I launched a weather balloon, collected basic fixed-site meteorological data, assembled and soldered data loggers and sensors, made simple temperature probes using metal wire, and carried out air-pollutant measurements.",
+      "Photo suggestion: a radiosonde-launch photo or fixed-site measurement photo. A close-up of a data logger or soldered sensor would also work.",
+    ],
+    content: (
+      <Archive number={5} section="atmospheric science training">
+        <h2>Atmospheric science became concrete through hands-on measurements</h2>
+        <div className="atmos-layout">
+          <PhotoSlot storageKey="yijia-atmos-course-photo" />
+          <div className="measurement-list">
+            {[
+              ["01", "Launch", "Weather balloon and atmospheric profiling"],
+              ["02", "Sample", "Fixed-site meteorological observations"],
+              ["03", "Build", "Data loggers, sensors, soldering, setup"],
+              ["04", "Measure", "Soil or water temperature and air pollutants"],
+            ].map((item) => <article key={item[0]}><b>{item[0]}</b><h3>{item[1]}</h3><p>{item[2]}</p></article>)}
+            <p className="atmos-takeaway">The course gave me practical intuition for sensor behaviour, data quality, and the atmosphere behind the time series.</p>
+          </div>
+        </div>
+      </Archive>
+    ),
+  },
+  {
+    id: "micrometeorology",
+    label: "Micrometeorology",
+    title: "Carbon and water exchange",
+    notes: [
+      "My first research experience was in the UBC Micrometeorology Lab.",
+      "At Burns Bog, I gained plot-scale experience with portable chamber measurements of carbon dioxide and methane fluxes. At the CA-DSM and CA-RBM AmeriFlux wetlands, I helped with eddy-covariance system maintenance and calibration and became familiar with flux-data quality control.",
+      "This experience made ecosystem-atmosphere exchange the environmental process I most want to understand.",
+    ],
+    content: (
+      <Archive number={6} section="ecosystem–atmosphere measurements">
+        <h2>Micrometeorology linked field measurements to carbon and water exchange</h2>
+        <div className="flux-gallery">
+          <figure className="flux-gallery__main"><img src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure>
+          <figure className="flux-gallery__detail"><img src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b>Portable chamber<br />CO₂ and CH₄ fluxes</figcaption></figure>
+          <figure><img src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure>
+          <figure><img src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure>
+        </div>
+        <div className="flux-caption"><p>Hands-on exposure to flux measurements, instrument maintenance, calibration, and quality control.</p><p><b>ECOSYSTEM SCALE</b>Eddy-covariance systems · CA-DSM and CA-RBM</p></div>
+      </Archive>
+    ),
+  },
+  {
+    id: "cesm2",
+    label: "Earth-system modelling",
+    title: "Environmental change at Earth-system scale",
+    notes: [
+      "At A*STAR, I worked on the eco-climatic impacts of large-scale floating photovoltaics using CESM2.",
+      "My work involved coupled atmosphere-ocean simulations, HPC workflows, sensitivity experiments, and interpretation of changes in surface energy balance and biological productivity.",
+      "The topic differs from savanna ecohydrology, but the transferable skill is process-based thinking: connecting a perturbation to coupled physical and biogeochemical responses.",
+    ],
+    content: (
+      <Archive number={7} section="earth-system modelling">
+        <h2>CESM2 taught me to test environmental change at Earth-system scale</h2>
+        <div className="cesm-layout">
+          <div className="cesm-copy"><p className="eyebrow">A*STAR · FLOATING PHOTOVOLTAICS</p><h3>Community Earth System Model version 2 (CESM2)</h3><p>Coupled atmosphere–ocean simulations<br />HPC workflows and sensitivity experiments<br />Physical and biogeochemical responses</p><blockquote>I learned to move from a physical intervention to model configuration, diagnostics, and mechanism-based interpretation.</blockquote></div>
+          <figure className="cesm-map"><img src={asset("images/cesm-map.jpeg")} alt="Global maps used in floating photovoltaic simulations" /></figure>
+          <figure className="cesm-response"><img src={asset("images/cesm-response.png")} alt="Sensitivity of net primary production to floating photovoltaic coverage" /></figure>
+          <figure className="cesm-nfix"><img src={asset("images/cesm-nfix.jpeg")} alt="CESM2 output map of diazotroph carbon fixation" /></figure>
+        </div>
+      </Archive>
+    ),
+  },
+  {
+    id: "giscience",
+    label: "GIScience",
+    title: "Spatial environmental integration",
+    notes: [
+      "My GIScience work has covered urban heat, environmental suitability, and real-time spatial data integration.",
+      "My master’s thesis models urban shading in Singapore, while the Transit Comfort Dashboard integrates environmental and activity data and received the ASEAN Geospatial Challenge 2026 Excellence Award.",
+      "For this PhD, the transferable value is the ability to integrate site-level observations with landscape and hydroclimatic context rather than treating every site as isolated.",
+    ],
+    content: (
+      <Archive number={8} section="spatial environmental analysis">
+        <h2>GIScience lets me integrate environmental processes across heterogeneous landscapes</h2>
+        <div className="spatial-images"><figure><img src={asset("images/white-roof.png")} alt="White-roof suitability GIS story map" /></figure><figure><img src={asset("images/transit-dashboard.png")} alt="Transit Comfort Dashboard" /></figure></div>
+        <div className="spatial-ideas"><article><b>URBAN ENVIRONMENT</b><h3>White-roof suitability<br />Urban shading and geometry</h3></article><article><b>DATA INTEGRATION</b><h3>Real-time environmental<br />and human-activity data</h3></article><article><b>TRANSFERABLE LOGIC</b><h3>Scale · heterogeneity<br />context · uncertainty</h3></article></div>
+        <p className="spatial-bottom">These tools can support flux-network synthesis by linking site dynamics to ecological and hydroclimatic context.</p>
+      </Archive>
+    ),
+  },
+  {
+    id: "project-fit",
+    label: "Project fit",
+    title: "Why this project",
+    notes: [
+      "My understanding is that the project asks how tree-grass savanna water-use strategies vary across years, what drives those dynamics, how extremes alter them, and how these responses can be modelled under increasing ecological and hydroclimatic demand.",
+      "I already bring field flux experience, GIScience, Python, data integration, and modelling workflows.",
+      "The PhD would let me deepen the parts I most want to learn: ecohydrology, water-carbon dynamics, global flux-network synthesis, and process-based or physics-guided modelling.",
+    ],
+    content: (
+      <Archive number={9} section="project fit">
+        <h2>The project sits exactly at the intersection I want to develop</h2>
+        <div className="fit-columns">
+          {[["01", "Observe", "Long-term sites", "Eddy-covariance fluxes", "Drying–rewetting events"], ["02", "Integrate", "Global flux network", "Ecological context", "Hydroclimatic extremes"], ["03", "Model", "Water-use strategies", "Mechanistic drivers", "Future sensitivity"]].map((item) => <article key={item[0]}><b>{item[0]}</b><h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p></article>)}
+        </div>
+        <div className="fit-bridge"><article><b>I BRING</b><p>Field measurement experience · GIScience · Python and modelling workflows</p></article><article><b>I WANT TO DEEPEN</b><p>Ecohydrology · water–carbon dynamics · process-based and physics-guided modelling</p></article></div>
+        <a className="project-link" href={projectUrl} target="_blank" rel="noreferrer">View project brief ↗</a>
+      </Archive>
+    ),
+  },
+  {
+    id: "direction",
+    label: "Research direction",
+    title: "The question I want to pursue",
+    notes: [
+      "The question I want to carry forward is how ecosystems regulate carbon and water exchange as environmental conditions change.",
+      "I am especially interested in answering it through a combination of field evidence, cross-site integration, and models that remain physically interpretable.",
+      "Thank you. I would be very happy to discuss where my experience could contribute most, and where you think I should develop further.",
+    ],
+    content: (
+      <Archive number={10} section="research direction">
+        <div className="closing">
+          <div className="closing__copy"><p className="eyebrow">THE DIRECTION I WANT TO PURSUE</p><h2>How do ecosystems regulate carbon and water exchange as environmental conditions change?</h2><div className="blue-rule" /><p>I want to answer this with field evidence, cross-site data integration, and models that remain physically interpretable.</p><b>THANK YOU · I LOOK FORWARD TO DISCUSSING THE PROJECT.</b></div>
+          <figure><img src={asset("images/field-forest.png")} alt="Yijia observing a forest environment" /></figure>
+        </div>
+      </Archive>
+    ),
+  },
+];
+
+export default function App() {
+  const [index, setIndex] = useState(0);
+  const [overview, setOverview] = useState(false);
+  const [notes, setNotes] = useState(false);
+  const [help, setHelp] = useState(false);
+  const wheelLocked = useRef(false);
+  const touchStart = useRef<number | null>(null);
+
+  const go = useCallback((target: number) => {
+    const next = Math.max(0, Math.min(slides.length - 1, target));
+    setIndex(next);
+    setOverview(false);
+    window.history.replaceState(null, "", `#${slides[next].id}`);
+  }, []);
+
+  const previous = useCallback(() => setIndex((value) => {
+    const next = Math.max(0, value - 1);
+    window.history.replaceState(null, "", `#${slides[next].id}`);
+    return next;
+  }), []);
+  const next = useCallback(() => setIndex((value) => {
+    const upcoming = Math.min(slides.length - 1, value + 1);
+    window.history.replaceState(null, "", `#${slides[upcoming].id}`);
+    return upcoming;
+  }), []);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    const initial = slides.findIndex((slide) => slide.id === hash);
+    if (initial >= 0) window.setTimeout(() => setIndex(initial), 0);
+    else window.history.replaceState(null, "", `#${slides[0].id}`);
+  }, []);
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if ((event.target as HTMLElement)?.tagName === "INPUT") return;
+      if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) { event.preventDefault(); next(); }
+      if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) { event.preventDefault(); previous(); }
+      if (event.key === "Home") go(0);
+      if (event.key === "End") go(slides.length - 1);
+      if (event.key.toLowerCase() === "o") setOverview((value) => !value);
+      if (event.key.toLowerCase() === "n") setNotes((value) => !value);
+      if (event.key.toLowerCase() === "h" || event.key === "?") setHelp((value) => !value);
+      if (event.key.toLowerCase() === "f") toggleFullscreen();
+      if (event.key === "Escape") { setOverview(false); setNotes(false); setHelp(false); }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go, next, previous]);
+
+  function onWheel(event: React.WheelEvent) {
+    if (Math.abs(event.deltaY) < 28 || wheelLocked.current || overview || notes) return;
+    wheelLocked.current = true;
+    if (event.deltaY > 0) next(); else previous();
+    window.setTimeout(() => { wheelLocked.current = false; }, 700);
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  return (
+    <main className="deck" onWheel={onWheel} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={(event) => { if (touchStart.current === null) return; const delta = touchStart.current - event.changedTouches[0].clientX; if (Math.abs(delta) > 48) { if (delta > 0) next(); else previous(); } touchStart.current = null; }}>
+      <a className="skip-link" href="#slide-content">Skip controls</a>
+      <div id="slide-content" className="stage" aria-live="polite">
+        {slides.map((slide, slideIndex) => (
+          <section key={slide.id} className={`slide ${slideIndex === index ? "slide--active" : slideIndex < index ? "slide--past" : "slide--future"}`} aria-hidden={slideIndex !== index}>
+            {slide.content}
+          </section>
+        ))}
+      </div>
+
+      <nav className="controls" aria-label="Presentation controls">
+        <button onClick={previous} disabled={index === 0} aria-label="Previous slide">←</button>
+        <button className="controls__count" onClick={() => setOverview(true)} aria-label="Open slide overview"><b>{String(index + 1).padStart(2, "0")}</b><span>/ {String(slides.length).padStart(2, "0")}</span></button>
+        <button onClick={next} disabled={index === slides.length - 1} aria-label="Next slide">→</button>
+      </nav>
+
+      <div className="utility-controls">
+        <button onClick={() => setOverview(true)} title="Overview (O)">Overview</button>
+        <button onClick={() => setNotes((value) => !value)} title="Speaker notes (N)">Notes</button>
+        <button onClick={toggleFullscreen} title="Fullscreen (F)">Full screen</button>
+        <button onClick={() => setHelp(true)} title="Keyboard help (H)" aria-label="Keyboard help">?</button>
+      </div>
+
+      <div className="progress" aria-hidden="true"><i style={{ width: `${((index + 1) / slides.length) * 100}%` }} /></div>
+
+      {overview ? (
+        <div className="overlay overview" role="dialog" aria-modal="true" aria-label="Slide overview">
+          <header><div><p className="eyebrow">OVERVIEW / {slides.length} SLIDES</p><h2>Field / Flux / Scale</h2></div><button onClick={() => setOverview(false)} aria-label="Close overview">×</button></header>
+          <div className="overview-grid">
+            {slides.map((slide, slideIndex) => <button key={slide.id} className={slideIndex === index ? "overview-card overview-card--active" : "overview-card"} onClick={() => go(slideIndex)}><span>{String(slideIndex + 1).padStart(2, "0")}</span><b>{slide.label}</b><small>{slide.title}</small></button>)}
+          </div>
+        </div>
+      ) : null}
+
+      {notes ? (
+        <aside className="notes-panel" aria-label="Speaker notes"><header><div><span>NOTES / {String(index + 1).padStart(2, "0")}</span><b>{slides[index].label}</b></div><button onClick={() => setNotes(false)} aria-label="Close speaker notes">×</button></header>{slides[index].notes.map((note) => <p key={note}>{note}</p>)}</aside>
+      ) : null}
+
+      {help ? (
+        <div className="overlay help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts"><div className="help-card"><button onClick={() => setHelp(false)} aria-label="Close keyboard help">×</button><p className="eyebrow">PRESENTATION KEYS</p><h2>Navigate without leaving the story</h2><dl><div><dt>← →</dt><dd>Previous / next slide</dd></div><div><dt>O</dt><dd>Slide overview</dd></div><div><dt>N</dt><dd>Speaker notes</dd></div><div><dt>F</dt><dd>Full screen</dd></div><div><dt>Home / End</dt><dd>First / last slide</dd></div></dl></div></div>
+      ) : null}
+    </main>
+  );
+}
