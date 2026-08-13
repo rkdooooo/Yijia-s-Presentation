@@ -32,8 +32,8 @@ function ZoomImage({ src, alt, className }: { src: string; alt: string; classNam
   );
 }
 
-function PhotoSlot({ storageKey, label }: { storageKey: string; label: string }) {
-  const [src, setSrc] = useState<string | null>(null);
+function PhotoSlot({ storageKey, label, defaultSrc }: { storageKey: string; label: string; defaultSrc?: string }) {
+  const [src, setSrc] = useState<string | null>(defaultSrc ?? null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -189,10 +189,10 @@ const slides: SlideDef[] = [
       <Archive number={4} section="undergraduate field course">
         <div className="visual-slide-heading"><div><p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p><h2>Background in Environmental Field Methods</h2></div><p>OBSERVE · SAMPLE · INTERPRET · COLLABORATE</p></div>
         <div className="course-gallery course-gallery--field">
-          <PhotoSlot storageKey="yijia-field-course-photo-1" label="Field observation" />
-          <PhotoSlot storageKey="yijia-field-course-photo-2" label="Sampling design" />
-          <PhotoSlot storageKey="yijia-field-course-photo-3" label="Landscape interpretation" />
-          <PhotoSlot storageKey="yijia-field-course-photo-4" label="Team fieldwork" />
+          <PhotoSlot storageKey="yijia-field-course-photo-1" label="Field station training" defaultSrc={asset("images/field-course-team.webp")} />
+          <PhotoSlot storageKey="yijia-field-course-photo-2" label="Field instruments" defaultSrc={asset("images/field-course-instruments.webp")} />
+          <PhotoSlot storageKey="yijia-field-course-photo-3" label="Wildlife observation" defaultSrc={asset("images/field-course-wildlife.webp")} />
+          <PhotoSlot storageKey="yijia-field-course-photo-4" label="Landscape field survey" defaultSrc={asset("images/field-course-landscape.webp")} />
         </div>
       </Archive>
     ),
