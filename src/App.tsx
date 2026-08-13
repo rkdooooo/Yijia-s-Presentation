@@ -152,20 +152,26 @@ const slides: SlideDef[] = [
     content: (
       <Archive number={3} section="research route">
         <h2>My research path expanded from field observations to spatial and Earth-system analysis</h2>
-        <div className="timeline">
-          {[
-            ["2023–25", "UBC Micrometeorology Lab", "Chamber and eddy-covariance fluxes"],
-            ["2024", "GIS & Urban Meteorology", "Global white-roof suitability"],
-            ["2025–26", "Spatial Epidemiology", "Liver-fluke risk in Northeast Thailand"],
-            ["2026", "ASEAN Geospatial Challenge", "Transit Comfort Dashboard"],
-            ["2025–26", "A*STAR", "CESM2 floating-photovoltaic simulations"],
-            ["2026", "Master’s Research Thesis", "Urban geometry and shade modelling"],
-          ].map((item) => (
-            <article key={item[1]} className="timeline__item">
-              <span className="timeline__year">{item[0]}</span><i />
-              <h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p>
-            </article>
-          ))}
+        <div className="timeline-stage">
+          <div className="timeline">
+            {[
+              ["2023–25", "UBC Micrometeorology Lab", "Chamber and eddy-covariance fluxes"],
+              ["2024–25", "GIS & Urban Meteorology", "Global white-roof suitability"],
+              ["2025–26", "Spatial Epidemiology", "Liver-fluke risk in Northeast Thailand"],
+              ["2025–26", "Global FPV · CESM2 Simulations", "A*STAR Earth-system modelling"],
+              ["2026", "ASEAN Geospatial Challenge", "Transit Comfort Dashboard"],
+              ["2026", "Master’s Research Thesis", "Urban geometry and shade modelling"],
+            ].map((item) => (
+              <article key={item[1]} className="timeline__item">
+                <span className="timeline__year">{item[0]}</span><i />
+                <h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p>
+              </article>
+            ))}
+          </div>
+          <div className="timeline-groups" aria-label="Academic stage of research projects">
+            <span><b>UNDERGRADUATE · UBC</b>Research foundation</span>
+            <span><b>POSTGRADUATE · NUS / SINGAPORE</b>Spatial analysis and modelling</span>
+          </div>
         </div>
       </Archive>
     ),
@@ -181,7 +187,7 @@ const slides: SlideDef[] = [
     ],
     content: (
       <Archive number={4} section="undergraduate field course">
-        <div className="visual-slide-heading"><div><p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p><h2>Learning environmental systems in the field</h2></div><p>OBSERVE · SAMPLE · INTERPRET · COLLABORATE</p></div>
+        <div className="visual-slide-heading"><div><p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p><h2>Background in Environmental Field Methods</h2></div><p>OBSERVE · SAMPLE · INTERPRET · COLLABORATE</p></div>
         <div className="course-gallery course-gallery--field">
           <PhotoSlot storageKey="yijia-field-course-photo-1" label="Field observation" />
           <PhotoSlot storageKey="yijia-field-course-photo-2" label="Sampling design" />
@@ -202,7 +208,7 @@ const slides: SlideDef[] = [
     ],
     content: (
       <Archive number={5} section="atmospheric science training">
-        <div className="visual-slide-heading"><div><p className="eyebrow">ATMOSPHERIC SCIENCE TRAINING</p><h2>Learning how atmospheric observations are made</h2></div><p>LAUNCH · SAMPLE · BUILD · MEASURE</p></div>
+        <div className="visual-slide-heading"><div><p className="eyebrow">UNDERGRADUATE COURSE TRAINING</p><h2>Methods in Atmospheric Science</h2></div><p>LAUNCH · SAMPLE · BUILD · MEASURE</p></div>
         <div className="course-gallery course-gallery--atmos">
           <PhotoSlot storageKey="yijia-atmos-course-photo-1" label="Weather-balloon launch" />
           <PhotoSlot storageKey="yijia-atmos-course-photo-2" label="Fixed-site meteorology" />
