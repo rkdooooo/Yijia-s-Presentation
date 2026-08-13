@@ -14,10 +14,27 @@ type SlideDef = {
 
 const projectUrl =
   "https://www.egu.eu/jobs/8245/phd-project-water-use-strategies-of-global-tree-grass-savannas-during-drying-and-rewetting-soils/";
+const manipUrl = "https://www.bgc-jena.mpg.de/en/bgi/manip";
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
-function PhotoSlot({ storageKey, compact = false }: { storageKey: string; compact?: boolean }) {
+type ZoomDetail = { src: string; alt: string };
+
+function requestZoom(src: string, alt: string) {
+  window.dispatchEvent(new CustomEvent<ZoomDetail>("presentation-zoom", { detail: { src, alt } }));
+}
+
+function ZoomImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  return (
+    <button className={`zoom-image ${className ?? ""}`} onClick={() => requestZoom(src, alt)} aria-label={`Enlarge image: ${alt}`}>
+      <img src={src} alt={alt} />
+      <span>VIEW ↗</span>
+    </button>
+  );
+}
+
+function PhotoSlot({ storageKey, label }: { storageKey: string; label: string }) {
   const [src, setSrc] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(storageKey);
@@ -41,14 +58,14 @@ function PhotoSlot({ storageKey, compact = false }: { storageKey: string; compac
   }
 
   return (
-    <label className={`photo-slot ${compact ? "photo-slot--compact" : ""} ${src ? "photo-slot--filled" : ""}`}>
-      {src ? <img src={src} alt="User-selected course fieldwork" /> : null}
+    <div className={`photo-slot ${src ? "photo-slot--filled" : ""}`}>
+      {src ? <ZoomImage src={src} alt={label} /> : <button className="photo-slot__add" onClick={() => inputRef.current?.click()} aria-label={`Add ${label}`}>+</button>}
       <span className="photo-slot__copy">
-        <b>{src ? "Replace photo" : compact ? "Add course photo" : "Add atmospheric measurement photo"}</b>
-        <small>{src ? "Click to choose another image" : "Click to choose from this device"}</small>
+        <b>{label}</b>
+        <button onClick={() => inputRef.current?.click()}>{src ? "Replace" : "Add photo"}</button>
       </span>
-      <input type="file" accept="image/*" onChange={choosePhoto} />
-    </label>
+      <input ref={inputRef} type="file" accept="image/*" onChange={choosePhoto} />
+    </div>
   );
 }
 
@@ -89,7 +106,7 @@ const slides: SlideDef[] = [
           <p className="cover__foot">PhD project · Water-use strategies of tree-grass savannas</p>
         </div>
         <figure className="cover__visual">
-          <img src={asset("images/zine-cover.png")} alt="A zine-style savanna tree, flux tower and soil profile" />
+          <ZoomImage src={asset("images/zine-cover.png")} alt="A zine-style savanna tree, flux tower and soil profile" />
           <figcaption>field / flux / scale</figcaption>
         </figure>
       </div>
@@ -107,7 +124,7 @@ const slides: SlideDef[] = [
     content: (
       <Archive number={2} section="research identity">
         <div className="identity-grid">
-          <figure className="portrait-paper"><img src={asset("images/portrait.jpeg")} alt="Portrait of Yijia Xie" /></figure>
+          <figure className="portrait-paper"><ZoomImage src={asset("images/portrait.jpeg")} alt="Portrait of Yijia Xie" /></figure>
           <div className="identity-copy">
             <p className="eyebrow">ONE RESEARCH IDENTITY</p>
             <h2>I connect field observation with spatial and process-based analysis</h2>
@@ -128,27 +145,28 @@ const slides: SlideDef[] = [
     label: "Research route",
     title: "A research route across scales",
     notes: [
-      "This timeline is the simplest way to explain how my interests developed.",
-      "My undergraduate training built the physical geography and atmospheric-science foundation. Micrometeorology made environmental processes tangible at the ecosystem scale.",
-      "At NUS and A*STAR, I added spatial and computational modelling. I now want to bring these scales together around ecosystem water use.",
+      "This timeline focuses on research experience rather than institutions or degrees.",
+      "I began with ecosystem-atmosphere observations, then added urban environmental GIS, spatial epidemiology, real-time geospatial integration, Earth-system modelling, and my current thesis.",
+      "The topics vary, but each project strengthened how I connect an environmental question to observations, spatial context, and an appropriate analytical scale.",
     ],
     content: (
       <Archive number={3} section="research route">
-        <h2>Each stage added a new scale to the same environmental question</h2>
+        <h2>My research path expanded from field observations to spatial and Earth-system analysis</h2>
         <div className="timeline">
           {[
-            ["2021–25", "UBC Geography", "Physical geography", "GIScience", "Atmospheric science"],
-            ["2023–25", "Micrometeorology Lab", "Chamber fluxes", "Eddy covariance", "Wetland field sites"],
-            ["2025–26", "NUS + A*STAR", "Spatial modelling", "CESM2", "Environmental integration"],
-            ["2026 →", "Savanna ecohydrology", "Water-use strategies", "Drying–rewetting", "Cross-site synthesis"],
-          ].map((item, index) => (
-            <article key={item[1]} className={index === 3 ? "timeline__item timeline__item--future" : "timeline__item"}>
+            ["2023–25", "UBC Micrometeorology Lab", "Chamber and eddy-covariance fluxes"],
+            ["2024", "GIS & Urban Meteorology", "Global white-roof suitability"],
+            ["2025–26", "Spatial Epidemiology", "Liver-fluke risk in Northeast Thailand"],
+            ["2026", "ASEAN Geospatial Challenge", "Transit Comfort Dashboard"],
+            ["2025–26", "A*STAR", "CESM2 floating-photovoltaic simulations"],
+            ["2026", "Master’s Research Thesis", "Urban geometry and shade modelling"],
+          ].map((item) => (
+            <article key={item[1]} className="timeline__item">
               <span className="timeline__year">{item[0]}</span><i />
               <h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p>
             </article>
           ))}
         </div>
-        <div className="degree-notes"><span>B.Sc. 81.1% · Graduated with Distinction</span><span>M.Sc. GPA 5.0 / 5.0</span></div>
       </Archive>
     ),
   },
@@ -158,21 +176,17 @@ const slides: SlideDef[] = [
     title: "What a dataset means on the ground",
     notes: [
       "This was an undergraduate geographical sciences field course.",
-      "The main lesson was not a single instrument. It was learning how a field site, sampling design, and practical constraints shape the data we later analyse.",
-      "Photo suggestion: choose an authentic field-course photo showing you taking measurements or working with the group. Add the course location and year if you remember them.",
+      "This undergraduate course trained me systematically in field observation, sampling design, landscape interpretation, and team-based data collection.",
+      "The slide is intentionally visual. I will use the photos to explain the sites, sampling decisions, and methods orally.",
     ],
     content: (
       <Archive number={4} section="undergraduate field course">
-        <h2>Fieldwork taught me to ask what a dataset means on the ground</h2>
-        <div className="field-layout">
-          <figure className="field-main"><img src={asset("images/field-forest.png")} alt="Yijia observing a forest environment during fieldwork" /></figure>
-          <div className="field-copy">
-            <p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p>
-            <h3>Field observation<br />Sampling design<br />Team logistics</h3>
-            <div className="blue-rule" />
-            <p>I learned to connect landscape context, measurement choices, and interpretation — not treat field data as detached numbers.</p>
-            <PhotoSlot storageKey="yijia-field-course-photo" compact />
-          </div>
+        <div className="visual-slide-heading"><div><p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p><h2>Learning environmental systems in the field</h2></div><p>OBSERVE · SAMPLE · INTERPRET · COLLABORATE</p></div>
+        <div className="course-gallery course-gallery--field">
+          <PhotoSlot storageKey="yijia-field-course-photo-1" label="Field observation" />
+          <PhotoSlot storageKey="yijia-field-course-photo-2" label="Sampling design" />
+          <PhotoSlot storageKey="yijia-field-course-photo-3" label="Landscape interpretation" />
+          <PhotoSlot storageKey="yijia-field-course-photo-4" label="Team fieldwork" />
         </div>
       </Archive>
     ),
@@ -184,22 +198,16 @@ const slides: SlideDef[] = [
     notes: [
       "This undergraduate atmospheric science training was very hands-on.",
       "I launched a weather balloon, collected basic fixed-site meteorological data, assembled and soldered data loggers and sensors, made simple temperature probes using metal wire, and carried out air-pollutant measurements.",
-      "Photo suggestion: a radiosonde-launch photo or fixed-site measurement photo. A close-up of a data logger or soldered sensor would also work.",
+      "The slide is intentionally visual. I will use these images to describe the instruments, setup, and data-quality lessons orally.",
     ],
     content: (
       <Archive number={5} section="atmospheric science training">
-        <h2>Atmospheric science became concrete through hands-on measurements</h2>
-        <div className="atmos-layout">
-          <PhotoSlot storageKey="yijia-atmos-course-photo" />
-          <div className="measurement-list">
-            {[
-              ["01", "Launch", "Weather balloon and atmospheric profiling"],
-              ["02", "Sample", "Fixed-site meteorological observations"],
-              ["03", "Build", "Data loggers, sensors, soldering, setup"],
-              ["04", "Measure", "Soil or water temperature and air pollutants"],
-            ].map((item) => <article key={item[0]}><b>{item[0]}</b><h3>{item[1]}</h3><p>{item[2]}</p></article>)}
-            <p className="atmos-takeaway">The course gave me practical intuition for sensor behaviour, data quality, and the atmosphere behind the time series.</p>
-          </div>
+        <div className="visual-slide-heading"><div><p className="eyebrow">ATMOSPHERIC SCIENCE TRAINING</p><h2>Learning how atmospheric observations are made</h2></div><p>LAUNCH · SAMPLE · BUILD · MEASURE</p></div>
+        <div className="course-gallery course-gallery--atmos">
+          <PhotoSlot storageKey="yijia-atmos-course-photo-1" label="Weather-balloon launch" />
+          <PhotoSlot storageKey="yijia-atmos-course-photo-2" label="Fixed-site meteorology" />
+          <PhotoSlot storageKey="yijia-atmos-course-photo-3" label="Data logger and sensors" />
+          <PhotoSlot storageKey="yijia-atmos-course-photo-4" label="Temperature and air pollutants" />
         </div>
       </Archive>
     ),
@@ -217,10 +225,10 @@ const slides: SlideDef[] = [
       <Archive number={6} section="ecosystem–atmosphere measurements">
         <h2>Micrometeorology linked field measurements to carbon and water exchange</h2>
         <div className="flux-gallery">
-          <figure className="flux-gallery__main"><img src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure>
-          <figure className="flux-gallery__detail"><img src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b>Portable chamber<br />CO₂ and CH₄ fluxes</figcaption></figure>
-          <figure><img src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure>
-          <figure><img src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure>
+          <figure className="flux-gallery__main"><ZoomImage src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure>
+          <figure className="flux-gallery__detail"><ZoomImage src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b>Portable chamber<br />CO₂ and CH₄ fluxes</figcaption></figure>
+          <figure><ZoomImage src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure>
+          <figure><ZoomImage src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure>
         </div>
         <div className="flux-caption"><p>Hands-on exposure to flux measurements, instrument maintenance, calibration, and quality control.</p><p><b>ECOSYSTEM SCALE</b>Eddy-covariance systems · CA-DSM and CA-RBM</p></div>
       </Archive>
@@ -240,9 +248,9 @@ const slides: SlideDef[] = [
         <h2>CESM2 taught me to test environmental change at Earth-system scale</h2>
         <div className="cesm-layout">
           <div className="cesm-copy"><p className="eyebrow">A*STAR · FLOATING PHOTOVOLTAICS</p><h3>Community Earth System Model version 2 (CESM2)</h3><p>Coupled atmosphere–ocean simulations<br />HPC workflows and sensitivity experiments<br />Physical and biogeochemical responses</p><blockquote>I learned to move from a physical intervention to model configuration, diagnostics, and mechanism-based interpretation.</blockquote></div>
-          <figure className="cesm-map"><img src={asset("images/cesm-map.jpeg")} alt="Global maps used in floating photovoltaic simulations" /></figure>
-          <figure className="cesm-response"><img src={asset("images/cesm-response.png")} alt="Sensitivity of net primary production to floating photovoltaic coverage" /></figure>
-          <figure className="cesm-nfix"><img src={asset("images/cesm-nfix.jpeg")} alt="CESM2 output map of diazotroph carbon fixation" /></figure>
+          <figure className="cesm-map"><ZoomImage src={asset("images/cesm-map.jpeg")} alt="Global maps used in floating photovoltaic simulations" /></figure>
+          <figure className="cesm-response"><ZoomImage src={asset("images/cesm-response.png")} alt="Sensitivity of net primary production to floating photovoltaic coverage" /></figure>
+          <figure className="cesm-nfix"><ZoomImage src={asset("images/cesm-nfix.jpeg")} alt="CESM2 output map of diazotroph carbon fixation" /></figure>
         </div>
       </Archive>
     ),
@@ -259,9 +267,40 @@ const slides: SlideDef[] = [
     content: (
       <Archive number={8} section="spatial environmental analysis">
         <h2>GIScience lets me integrate environmental processes across heterogeneous landscapes</h2>
-        <div className="spatial-images"><figure><img src={asset("images/white-roof.png")} alt="White-roof suitability GIS story map" /></figure><figure><img src={asset("images/transit-dashboard.png")} alt="Transit Comfort Dashboard" /></figure></div>
+        <div className="spatial-images"><figure><ZoomImage src={asset("images/white-roof.png")} alt="White-roof suitability GIS story map" /></figure><figure><ZoomImage src={asset("images/transit-dashboard.png")} alt="Transit Comfort Dashboard" /></figure></div>
         <div className="spatial-ideas"><article><b>URBAN ENVIRONMENT</b><h3>White-roof suitability<br />Urban shading and geometry</h3></article><article><b>DATA INTEGRATION</b><h3>Real-time environmental<br />and human-activity data</h3></article><article><b>TRANSFERABLE LOGIC</b><h3>Scale · heterogeneity<br />context · uncertainty</h3></article></div>
         <p className="spatial-bottom">These tools can support flux-network synthesis by linking site dynamics to ecological and hydroclimatic context.</p>
+      </Archive>
+    ),
+  },
+  {
+    id: "motivation",
+    label: "Motivation",
+    title: "Why observation remains the foundation",
+    notes: [
+      "I began as a field person. At UBC, environmental questions became real to me through sites, instruments, repeated measurements, and the practical limits of collecting reliable observations.",
+      "At NUS, I moved much further into GIScience, GeoAI, spatial analysis, and modelling. That did not make fieldwork less relevant. It made me more aware that every model and every dataset ultimately depends on how the underlying system was observed and represented.",
+      "The MANIP statement resonated with me because I encountered a related issue in my modelling work: a sophisticated model can still be constrained by how well its inputs and structure represent the environmental system. I see this PhD as a chance to combine my original strength as a field person with the spatial and modelling skills I have developed since.",
+    ],
+    content: (
+      <Archive number={9} section="motivation">
+        <div className="motivation-layout">
+          <div className="motivation-story">
+            <p className="eyebrow">WHY THIS DIRECTION</p>
+            <h2>I moved deeper into models — and saw more clearly why observation matters</h2>
+            <div className="motivation-path">
+              <article><b>01</b><h3>Field grounding</h3><p>How environmental data are actually made</p></article>
+              <article><b>02</b><h3>Spatial + GeoAI</h3><p>How observations are integrated across scale</p></article>
+              <article><b>03</b><h3>Model–data fit</h3><p>How representation shapes what a model can explain</p></article>
+            </div>
+          </div>
+          <blockquote className="motivation-quote">
+            <span>FROM THE MANIP PROJECT CONTEXT</span>
+            <p>“Earth observation systems, and associated land-surface modeling development have been so far poorly adapted to the key structural and functional characteristics of tree-grass ecosystems.”</p>
+            <a href={manipUrl} target="_blank" rel="noreferrer">Read source ↗</a>
+          </blockquote>
+          <div className="motivation-fit"><b>WHAT I CAN COMBINE</b><p>Field judgement that understands the observations <i>+</i> spatial skills that connect sites, landscapes, and models.</p></div>
+        </div>
       </Archive>
     ),
   },
@@ -275,7 +314,7 @@ const slides: SlideDef[] = [
       "The PhD would let me deepen the parts I most want to learn: ecohydrology, water-carbon dynamics, global flux-network synthesis, and process-based or physics-guided modelling.",
     ],
     content: (
-      <Archive number={9} section="project fit">
+      <Archive number={10} section="project fit">
         <h2>The project sits exactly at the intersection I want to develop</h2>
         <div className="fit-columns">
           {[["01", "Observe", "Long-term sites", "Eddy-covariance fluxes", "Drying–rewetting events"], ["02", "Integrate", "Global flux network", "Ecological context", "Hydroclimatic extremes"], ["03", "Model", "Water-use strategies", "Mechanistic drivers", "Future sensitivity"]].map((item) => <article key={item[0]}><b>{item[0]}</b><h3>{item[1]}</h3><p>{item.slice(2).map((line) => <span key={line}>{line}</span>)}</p></article>)}
@@ -295,10 +334,10 @@ const slides: SlideDef[] = [
       "Thank you. I would be very happy to discuss where my experience could contribute most, and where you think I should develop further.",
     ],
     content: (
-      <Archive number={10} section="research direction">
+      <Archive number={11} section="research direction">
         <div className="closing">
           <div className="closing__copy"><p className="eyebrow">THE DIRECTION I WANT TO PURSUE</p><h2>How do ecosystems regulate carbon and water exchange as environmental conditions change?</h2><div className="blue-rule" /><p>I want to answer this with field evidence, cross-site data integration, and models that remain physically interpretable.</p><b>THANK YOU · I LOOK FORWARD TO DISCUSSING THE PROJECT.</b></div>
-          <figure><img src={asset("images/field-forest.png")} alt="Yijia observing a forest environment" /></figure>
+          <figure><ZoomImage src={asset("images/field-forest.png")} alt="Yijia observing a forest environment" /></figure>
         </div>
       </Archive>
     ),
@@ -310,6 +349,7 @@ export default function App() {
   const [overview, setOverview] = useState(false);
   const [notes, setNotes] = useState(false);
   const [help, setHelp] = useState(false);
+  const [zoom, setZoom] = useState<ZoomDetail | null>(null);
   const wheelLocked = useRef(false);
   const touchStart = useRef<number | null>(null);
 
@@ -339,8 +379,20 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    function onZoom(event: Event) {
+      setZoom((event as CustomEvent<ZoomDetail>).detail);
+    }
+    window.addEventListener("presentation-zoom", onZoom);
+    return () => window.removeEventListener("presentation-zoom", onZoom);
+  }, []);
+
+  useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if ((event.target as HTMLElement)?.tagName === "INPUT") return;
+      if (zoom) {
+        if (event.key === "Escape") setZoom(null);
+        return;
+      }
       if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) { event.preventDefault(); next(); }
       if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) { event.preventDefault(); previous(); }
       if (event.key === "Home") go(0);
@@ -353,7 +405,7 @@ export default function App() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, next, previous]);
+  }, [go, next, previous, zoom]);
 
   function onWheel(event: React.WheelEvent) {
     if (Math.abs(event.deltaY) < 28 || wheelLocked.current || overview || notes) return;
@@ -408,6 +460,14 @@ export default function App() {
 
       {help ? (
         <div className="overlay help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts"><div className="help-card"><button onClick={() => setHelp(false)} aria-label="Close keyboard help">×</button><p className="eyebrow">PRESENTATION KEYS</p><h2>Navigate without leaving the story</h2><dl><div><dt>← →</dt><dd>Previous / next slide</dd></div><div><dt>O</dt><dd>Slide overview</dd></div><div><dt>N</dt><dd>Speaker notes</dd></div><div><dt>F</dt><dd>Full screen</dd></div><div><dt>Home / End</dt><dd>First / last slide</dd></div></dl></div></div>
+      ) : null}
+
+      {zoom ? (
+        <div className="image-lightbox" role="dialog" aria-modal="true" aria-label={zoom.alt} onClick={() => setZoom(null)}>
+          <button onClick={() => setZoom(null)} aria-label="Close enlarged image">×</button>
+          <img src={zoom.src} alt={zoom.alt} onClick={(event) => event.stopPropagation()} />
+          <p>{zoom.alt}</p>
+        </div>
       ) : null}
     </main>
   );
