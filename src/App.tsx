@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { ChangeEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 type SlideDef = {
   id: string;
@@ -17,57 +17,51 @@ const projectUrl =
 const manipUrl = "https://www.bgc-jena.mpg.de/en/bgi/manip";
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
-type ZoomDetail = { src: string; alt: string };
+type GalleryImage = { src: string; alt: string };
+type ZoomDetail = { items: GalleryImage[]; index: number };
 
-function requestZoom(src: string, alt: string) {
-  window.dispatchEvent(new CustomEvent<ZoomDetail>("presentation-zoom", { detail: { src, alt } }));
+function requestZoom(items: GalleryImage[], index: number) {
+  window.dispatchEvent(new CustomEvent<ZoomDetail>("presentation-zoom", { detail: { items, index } }));
 }
 
-function ZoomImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
+function ZoomImage({ src, alt, className, gallery, galleryIndex = 0 }: { src: string; alt: string; className?: string; gallery?: GalleryImage[]; galleryIndex?: number }) {
   return (
-    <button className={`zoom-image ${className ?? ""}`} onClick={() => requestZoom(src, alt)} aria-label={`Enlarge image: ${alt}`}>
+    <button className={`zoom-image ${className ?? ""}`} onClick={() => requestZoom(gallery ?? [{ src, alt }], gallery ? galleryIndex : 0)} aria-label={`Enlarge image: ${alt}`}>
       <img src={src} alt={alt} />
       <span>VIEW ↗</span>
     </button>
   );
 }
 
-function PhotoSlot({ storageKey, label, defaultSrc }: { storageKey: string; label: string; defaultSrc?: string }) {
-  const [src, setSrc] = useState<string | null>(defaultSrc ?? null);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(storageKey);
-    if (stored) window.setTimeout(() => setSrc(stored), 0);
-  }, [storageKey]);
-
-  function choosePhoto(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const value = String(reader.result);
-      setSrc(value);
-      try {
-        window.localStorage.setItem(storageKey, value);
-      } catch {
-        // Large photos can still be previewed for this session.
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-
+function PhotoTile({ photo, gallery, index }: { photo: GalleryImage; gallery: GalleryImage[]; index: number }) {
   return (
-    <div className={`photo-slot ${src ? "photo-slot--filled" : ""}`}>
-      {src ? <ZoomImage src={src} alt={label} /> : <button className="photo-slot__add" onClick={() => inputRef.current?.click()} aria-label={`Add ${label}`}>+</button>}
-      <span className="photo-slot__copy">
-        <b>{label}</b>
-        <button onClick={() => inputRef.current?.click()}>{src ? "Replace" : "Add photo"}</button>
-      </span>
-      <input ref={inputRef} type="file" accept="image/*" onChange={choosePhoto} />
-    </div>
+    <figure className="photo-tile">
+      <ZoomImage src={photo.src} alt={photo.alt} gallery={gallery} galleryIndex={index} />
+    </figure>
   );
 }
+
+const fieldCoursePhotos: GalleryImage[] = [
+  { src: asset("images/field-course-team.webp"), alt: "Field station training" },
+  { src: asset("images/field-course-instruments.webp"), alt: "Environmental field instruments" },
+  { src: asset("images/field-course-wildlife.webp"), alt: "Wildlife observation during field training" },
+  { src: asset("images/field-course-landscape.webp"), alt: "Landscape field survey" },
+];
+
+const atmosphericSciencePhotos: GalleryImage[] = [
+  { src: asset("images/atmos-01-controller-board.webp"), alt: "Programmable sensor controller board" },
+  { src: asset("images/atmos-02-sensor-assembly.webp"), alt: "Hand-built atmospheric sensor assembly" },
+  { src: asset("images/atmos-03-instrument-package.webp"), alt: "Assembled instrument package" },
+  { src: asset("images/atmos-04-sensor-module.webp"), alt: "Sensor module inspection" },
+  { src: asset("images/atmos-05-data-logger-test.webp"), alt: "Data logger testing and computer setup" },
+  { src: asset("images/atmos-06-barometer.webp"), alt: "Fortin cistern barometer" },
+  { src: asset("images/atmos-07-pressure-instrument.webp"), alt: "Atmospheric pressure instrument" },
+  { src: asset("images/atmos-08-wind-tunnel.webp"), alt: "Wind-tunnel measurement facility" },
+  { src: asset("images/atmos-09-balloon-payload.webp"), alt: "Preparing the weather-balloon payload" },
+  { src: asset("images/atmos-10-balloon-rig.webp"), alt: "Weather-balloon rig and line preparation" },
+  { src: asset("images/atmos-11-balloon-launch.webp"), alt: "Launching a weather balloon" },
+  { src: asset("images/atmos-12-analysis-briefing.webp"), alt: "Measurement analysis and class briefing" },
+];
 
 function Archive({ number, section, children }: { number: number; section: string; children: ReactNode }) {
   return (
@@ -189,10 +183,7 @@ const slides: SlideDef[] = [
       <Archive number={4} section="undergraduate field course">
         <div className="visual-slide-heading"><div><p className="eyebrow">GEOGRAPHICAL SCIENCES FIELD COURSE</p><h2>Background in Environmental Field Methods</h2></div><p>OBSERVE · SAMPLE · INTERPRET · COLLABORATE</p></div>
         <div className="course-gallery course-gallery--field">
-          <PhotoSlot storageKey="yijia-field-course-photo-1" label="Field station training" defaultSrc={asset("images/field-course-team.webp")} />
-          <PhotoSlot storageKey="yijia-field-course-photo-2" label="Field instruments" defaultSrc={asset("images/field-course-instruments.webp")} />
-          <PhotoSlot storageKey="yijia-field-course-photo-3" label="Wildlife observation" defaultSrc={asset("images/field-course-wildlife.webp")} />
-          <PhotoSlot storageKey="yijia-field-course-photo-4" label="Landscape field survey" defaultSrc={asset("images/field-course-landscape.webp")} />
+          {fieldCoursePhotos.map((photo, index) => <PhotoTile key={photo.src} photo={photo} gallery={fieldCoursePhotos} index={index} />)}
         </div>
       </Archive>
     ),
@@ -208,12 +199,12 @@ const slides: SlideDef[] = [
     ],
     content: (
       <Archive number={5} section="atmospheric science training">
-        <div className="visual-slide-heading"><div><p className="eyebrow">UNDERGRADUATE COURSE TRAINING</p><h2>Methods in Atmospheric Science</h2></div><p>LAUNCH · SAMPLE · BUILD · MEASURE</p></div>
-        <div className="course-gallery course-gallery--atmos">
-          <PhotoSlot storageKey="yijia-atmos-course-photo-1" label="Weather-balloon launch" />
-          <PhotoSlot storageKey="yijia-atmos-course-photo-2" label="Fixed-site meteorology" />
-          <PhotoSlot storageKey="yijia-atmos-course-photo-3" label="Data logger and sensors" />
-          <PhotoSlot storageKey="yijia-atmos-course-photo-4" label="Temperature and air pollutants" />
+        <div className="visual-slide-heading visual-slide-heading--atmos"><div><p className="eyebrow">UNDERGRADUATE COURSE TRAINING</p><h2>Methods in Atmospheric Science</h2></div><p>FROM HARDWARE TO DATA</p></div>
+        <div className="atmos-process" aria-label="Build, test and calibrate, deploy, measure and analyse">
+          <span><b>01</b> BUILD</span><span><b>02</b> TEST + CALIBRATE</span><span><b>03</b> DEPLOY</span><span><b>04</b> MEASURE + ANALYSE</span>
+        </div>
+        <div className="atmos-gallery">
+          {atmosphericSciencePhotos.map((photo, index) => <PhotoTile key={photo.src} photo={photo} gallery={atmosphericSciencePhotos} index={index} />)}
         </div>
       </Archive>
     ),
@@ -358,6 +349,11 @@ export default function App() {
   const [zoom, setZoom] = useState<ZoomDetail | null>(null);
   const wheelLocked = useRef(false);
   const touchStart = useRef<number | null>(null);
+  const lightboxTouchStart = useRef<number | null>(null);
+
+  const moveZoom = useCallback((direction: number) => {
+    setZoom((current) => current ? { ...current, index: (current.index + direction + current.items.length) % current.items.length } : null);
+  }, []);
 
   const go = useCallback((target: number) => {
     const next = Math.max(0, Math.min(slides.length - 1, target));
@@ -397,6 +393,8 @@ export default function App() {
       if ((event.target as HTMLElement)?.tagName === "INPUT") return;
       if (zoom) {
         if (event.key === "Escape") setZoom(null);
+        if (event.key === "ArrowRight") { event.preventDefault(); moveZoom(1); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); moveZoom(-1); }
         return;
       }
       if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) { event.preventDefault(); next(); }
@@ -411,7 +409,7 @@ export default function App() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, next, previous, zoom]);
+  }, [go, moveZoom, next, previous, zoom]);
 
   function onWheel(event: React.WheelEvent) {
     if (Math.abs(event.deltaY) < 28 || wheelLocked.current || overview || notes) return;
@@ -469,10 +467,12 @@ export default function App() {
       ) : null}
 
       {zoom ? (
-        <div className="image-lightbox" role="dialog" aria-modal="true" aria-label={zoom.alt} onClick={() => setZoom(null)}>
-          <button onClick={() => setZoom(null)} aria-label="Close enlarged image">×</button>
-          <img src={zoom.src} alt={zoom.alt} onClick={(event) => event.stopPropagation()} />
-          <p>{zoom.alt}</p>
+        <div className="image-lightbox" role="dialog" aria-modal="true" aria-label={zoom.items[zoom.index].alt} onClick={() => setZoom(null)} onTouchStart={(event) => { event.stopPropagation(); lightboxTouchStart.current = event.touches[0].clientX; }} onTouchEnd={(event) => { event.stopPropagation(); if (lightboxTouchStart.current === null) return; const delta = lightboxTouchStart.current - event.changedTouches[0].clientX; if (Math.abs(delta) > 48 && zoom.items.length > 1) moveZoom(delta > 0 ? 1 : -1); lightboxTouchStart.current = null; }}>
+          <button className="image-lightbox__close" onClick={() => setZoom(null)} aria-label="Close enlarged image">×</button>
+          {zoom.items.length > 1 ? <button className="image-lightbox__previous" onClick={(event) => { event.stopPropagation(); moveZoom(-1); }} aria-label="Previous image">←</button> : null}
+          <img src={zoom.items[zoom.index].src} alt={zoom.items[zoom.index].alt} onClick={(event) => event.stopPropagation()} />
+          {zoom.items.length > 1 ? <button className="image-lightbox__next" onClick={(event) => { event.stopPropagation(); moveZoom(1); }} aria-label="Next image">→</button> : null}
+          {zoom.items.length > 1 ? <p>{String(zoom.index + 1).padStart(2, "0")} / {String(zoom.items.length).padStart(2, "0")}</p> : null}
         </div>
       ) : null}
     </main>
