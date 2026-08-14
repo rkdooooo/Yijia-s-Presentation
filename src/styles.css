@@ -101,15 +101,18 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .zoom-image { position: relative; display: block; width: 100%; height: 100%; border: 0; padding: 0; background: transparent; overflow: hidden; cursor: zoom-in; }
 .zoom-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-.flux-gallery { flex: 1; min-height: 0; display: grid; grid-template-columns: 31% 20% 26% 20%; gap: 1.3%; }
-.flux-gallery figure { margin: 0; overflow: hidden; }
-.flux-gallery img { width: 100%; height: 100%; object-fit: cover; }
-.flux-gallery__detail { display: grid; grid-template-rows: 52% 1fr; }
-.flux-gallery__detail figcaption { padding-top: clamp(.75rem, 1.8vh, 1.25rem); font: 600 clamp(.76rem, 1vw, 1.05rem)/1.35 var(--sans); }
-.flux-gallery__detail figcaption span { display: block; }
-.flux-gallery__detail figcaption b, .flux-caption b { display: block; color: var(--blue); margin-bottom: .45rem; font: 700 clamp(.58rem, .7vw, .76rem)/1.1 var(--sans); letter-spacing: .05em; }
-.flux-caption { display: grid; grid-template-columns: 1fr 1fr; gap: 9%; margin-top: clamp(.75rem, 1.8vh, 1.2rem); color: var(--muted); font: 500 clamp(.72rem, .9vw, 1rem)/1.35 var(--sans); }
-.flux-caption p { margin-bottom: 0; }
+.flux-projects { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(1rem, 2vw, 2rem); }
+.flux-project { min-width: 0; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; border-bottom: 4px solid var(--blue); }
+.flux-project__images { min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.45rem, .8vw, .75rem); }
+.flux-project__images--chamber { grid-template-columns: 1.25fr .75fr; }
+.flux-project__images figure { min-height: 0; margin: 0; overflow: hidden; }
+.flux-project__images img { width: 100%; height: 100%; object-fit: cover; }
+.flux-project__images--chamber figure:first-child img { object-position: 48% 50%; }
+.flux-project__copy { padding: clamp(.75rem, 1.6vh, 1.15rem) 0 clamp(.65rem, 1.3vh, .95rem); }
+.flux-project__copy > b { display: block; margin-bottom: .42rem; color: var(--blue); font: 700 clamp(.58rem, .7vw, .76rem)/1.1 var(--sans); letter-spacing: .055em; }
+.flux-project__copy h3 { margin: 0 0 .42rem; font: 700 clamp(1rem, 1.45vw, 1.65rem)/1.06 var(--sans); letter-spacing: -.025em; }
+.flux-project__copy p { margin: 0; color: var(--muted); font: 550 clamp(.72rem, .9vw, 1rem)/1.25 var(--sans); }
+.flux-project__copy sub { font-size: .72em; }
 
 .cesm-layout { position: relative; flex: 1; min-height: 0; }
 .cesm-copy { position: absolute; left: 0; top: 2%; width: 45%; }
@@ -229,9 +232,8 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
   .atmos-process { grid-template-columns: repeat(4, 1fr); }
   .atmos-process span { font-size: .5rem; }
   .visual-slide-heading > p { display: none; }
-  .flux-gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-  .flux-gallery__detail { display: block; }
-  .flux-gallery__detail figcaption { display: none; }
+  .flux-projects { grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .flux-project__copy h3 { font-size: .8rem; }
   .project-links { gap: 2%; }
   .project-links a { padding-right: 1.2rem; }
   .project-links b { font-size: .68rem; }

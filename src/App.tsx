@@ -214,19 +214,22 @@ const slides: SlideDef[] = [
     title: "Carbon and water exchange",
     notes: [
       "My first research experience was in the UBC Micrometeorology Lab.",
-      "At Burns Bog, I gained plot-scale experience with portable chamber measurements of carbon dioxide and methane fluxes. At the CA-DSM and CA-RBM AmeriFlux wetlands, I helped with eddy-covariance system maintenance and calibration and became familiar with flux-data quality control.",
-      "This experience made ecosystem-atmosphere exchange the environmental process I most want to understand.",
+      "At Burns Bog, I supported a post-fire management study examining how pine seedling removal affected ecosystem respiration and methane fluxes using portable chambers.",
+      "In a separate project at the CA-DSM and CA-RBM AmeriFlux wetlands, I helped maintain and calibrate eddy-covariance systems.",
     ],
     content: (
       <Archive number={6} section="ecosystem–atmosphere measurements">
-        <h2>Micrometeorology linked field measurements to carbon and water exchange</h2>
-        <div className="flux-gallery">
-          <figure className="flux-gallery__main"><ZoomImage src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure>
-          <figure className="flux-gallery__detail"><ZoomImage src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b><span>Portable chamber</span><span>CO₂ + CH₄ fluxes</span></figcaption></figure>
-          <figure><ZoomImage src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure>
-          <figure><ZoomImage src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure>
+        <h2>Two projects gave me experience with chamber measurements and flux-tower operations</h2>
+        <div className="flux-projects">
+          <article className="flux-project">
+            <div className="flux-project__images flux-project__images--chamber"><figure><ZoomImage src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure><figure><ZoomImage src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /></figure></div>
+            <div className="flux-project__copy"><b>PROJECT 01 · BURNS BOG</b><h3>Post-fire pine seedling removal and carbon fluxes</h3><p>Portable chamber · R<sub>eco</sub> + CH₄</p></div>
+          </article>
+          <article className="flux-project">
+            <div className="flux-project__images"><figure><ZoomImage src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure><figure><ZoomImage src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure></div>
+            <div className="flux-project__copy"><b>PROJECT 02 · AMERIFLUX WETLANDS</b><h3>Eddy-covariance tower operations</h3><p>Maintenance + calibration · CA-DSM + CA-RBM</p></div>
+          </article>
         </div>
-        <div className="flux-caption"><p><b>FIELD PRACTICE</b>Instrument setup · maintenance · calibration · quality control</p><p><b>ECOSYSTEM SCALE</b>Eddy covariance · CA-DSM + CA-RBM</p></div>
       </Archive>
     ),
   },

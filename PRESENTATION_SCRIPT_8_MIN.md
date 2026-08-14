@@ -24,7 +24,7 @@ My atmospheric science training covered the full measurement process. I worked w
 
 ## Slide 6 — Micrometeorology | 3:30–4:30
 
-The UBC Micrometeorology Lab was my first sustained research experience. At Burns Bog, I worked with portable chambers used to measure carbon dioxide and methane fluxes at plot scale. At the CA-DSM and CA-RBM wetland sites, I assisted with eddy-covariance system maintenance and calibration and became familiar with flux-data quality control. This was where carbon and water exchange became a real process for me. A flux value reflects vegetation, water conditions, meteorology, instrumentation, and the footprint represented by the tower. That experience is the strongest direct connection between my background and this PhD.
+The UBC Micrometeorology Lab was my first sustained research experience. At Burns Bog, I supported a study examining how pine seedling removal after fire affected ecosystem respiration and methane fluxes. We used non-steady-state portable chamber-analyser measurements across treatment sites. In a separate project at the CA-DSM and CA-RBM wetlands, I assisted with eddy-covariance system maintenance and calibration. Together, these projects let me see carbon exchange at two scales: targeted plot measurements and continuous ecosystem-scale observations. They are the strongest direct connection between my background and this PhD.
 
 ## Slide 7 — CESM2 and Earth-system modelling | 4:30–5:20
 
@@ -41,4 +41,3 @@ I started as a field person, but at NUS I moved much further into GIS, GeoAI, an
 ## Slide 10 — Project fit | 7:10–8:00
 
 I will not repeat the project description, but I see the work as a combination of observation, cross-site integration, and modelling. I can already contribute field measurement experience, familiarity with flux research, GIScience, Python, and environmental modelling workflows. The areas I most want to deepen are ecohydrology, water–carbon interactions, global flux-network analysis, and physically interpretable modelling. I would be interested to hear which part of the project you expect the PhD student to take ownership of first, and where you think my current background would be most useful.
-
