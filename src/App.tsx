@@ -330,7 +330,6 @@ const slides: SlideDef[] = [
 export default function App() {
   const [index, setIndex] = useState(0);
   const [overview, setOverview] = useState(false);
-  const [notes, setNotes] = useState(false);
   const [help, setHelp] = useState(false);
   const [zoom, setZoom] = useState<ZoomDetail | null>(null);
   const wheelLocked = useRef(false);
@@ -388,17 +387,16 @@ export default function App() {
       if (event.key === "Home") go(0);
       if (event.key === "End") go(slides.length - 1);
       if (event.key.toLowerCase() === "o") setOverview((value) => !value);
-      if (event.key.toLowerCase() === "n") setNotes((value) => !value);
       if (event.key.toLowerCase() === "h" || event.key === "?") setHelp((value) => !value);
       if (event.key.toLowerCase() === "f") toggleFullscreen();
-      if (event.key === "Escape") { setOverview(false); setNotes(false); setHelp(false); }
+      if (event.key === "Escape") { setOverview(false); setHelp(false); }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go, moveZoom, next, previous, zoom]);
 
   function onWheel(event: React.WheelEvent) {
-    if (Math.abs(event.deltaY) < 28 || wheelLocked.current || overview || notes) return;
+    if (Math.abs(event.deltaY) < 28 || wheelLocked.current || overview) return;
     wheelLocked.current = true;
     if (event.deltaY > 0) next(); else previous();
     window.setTimeout(() => { wheelLocked.current = false; }, 700);
@@ -428,7 +426,6 @@ export default function App() {
 
       <div className="utility-controls">
         <button onClick={() => setOverview(true)} title="Overview (O)">Overview</button>
-        <button onClick={() => setNotes((value) => !value)} title="Speaker notes (N)">Notes</button>
         <button onClick={toggleFullscreen} title="Fullscreen (F)">Full screen</button>
         <button onClick={() => setHelp(true)} title="Keyboard help (H)" aria-label="Keyboard help">?</button>
       </div>
@@ -444,12 +441,8 @@ export default function App() {
         </div>
       ) : null}
 
-      {notes ? (
-        <aside className="notes-panel" aria-label="Speaker notes"><header><div><span>NOTES / {String(index + 1).padStart(2, "0")}</span><b>{slides[index].label}</b></div><button onClick={() => setNotes(false)} aria-label="Close speaker notes">×</button></header>{slides[index].notes.map((note) => <p key={note}>{note}</p>)}</aside>
-      ) : null}
-
       {help ? (
-        <div className="overlay help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts"><div className="help-card"><button onClick={() => setHelp(false)} aria-label="Close keyboard help">×</button><p className="eyebrow">PRESENTATION KEYS</p><h2>Navigate without leaving the story</h2><dl><div><dt>← →</dt><dd>Previous / next slide</dd></div><div><dt>O</dt><dd>Slide overview</dd></div><div><dt>N</dt><dd>Speaker notes</dd></div><div><dt>F</dt><dd>Full screen</dd></div><div><dt>Home / End</dt><dd>First / last slide</dd></div></dl></div></div>
+        <div className="overlay help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts"><div className="help-card"><button onClick={() => setHelp(false)} aria-label="Close keyboard help">×</button><p className="eyebrow">PRESENTATION KEYS</p><h2>Navigate without leaving the story</h2><dl><div><dt>← →</dt><dd>Previous / next slide</dd></div><div><dt>O</dt><dd>Slide overview</dd></div><div><dt>F</dt><dd>Full screen</dd></div><div><dt>Home / End</dt><dd>First / last slide</dd></div></dl></div></div>
       ) : null}
 
       {zoom ? (

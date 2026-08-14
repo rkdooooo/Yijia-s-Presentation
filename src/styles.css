@@ -178,7 +178,7 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .overview { padding: clamp(1.2rem, 4vw, 4rem); overflow-y: auto; }
 .overview > header { display: flex; justify-content: space-between; align-items: start; max-width: 95rem; margin: 0 auto 2rem; }
 .overview header h2 { font-size: clamp(2rem, 3.5vw, 4rem); margin: .5rem 0 0; }
-.overview header button, .notes-panel header button, .help-card > button { border: 0; background: transparent; color: inherit; cursor: pointer; font: 300 2.2rem var(--sans); }
+.overview header button, .help-card > button { border: 0; background: transparent; color: inherit; cursor: pointer; font: 300 2.2rem var(--sans); }
 .overview-grid { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: clamp(.65rem, 1.4vw, 1.3rem); max-width: 95rem; margin: 0 auto; }
 .overview-card { min-height: 21vh; padding: 1.15rem; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.035); color: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, background .2s, border-color .2s; }
 .overview-card:hover { transform: translateY(-4px); background: rgba(255,255,255,.075); }
@@ -186,13 +186,6 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .overview-card span { color: #86a6ff; font: .7rem var(--mono); }
 .overview-card b { margin: auto 0 .8rem; font: 700 clamp(1.1rem, 1.6vw, 1.65rem)/1.05 var(--serif); }
 .overview-card small { color: #bdb6a9; line-height: 1.35; }
-
-.notes-panel { position: fixed; z-index: 45; right: 0; top: 0; bottom: 0; width: min(36rem, 46vw); padding: clamp(1.5rem, 3vw, 3rem); background: #23201b; color: var(--paper-light); box-shadow: -20px 0 60px rgba(0,0,0,.28); overflow-y: auto; }
-.notes-panel header { display: flex; align-items: start; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 1.5rem; margin-bottom: 2rem; }
-.notes-panel header span, .notes-panel header b { display: block; }
-.notes-panel header span { color: #86a6ff; font: .68rem var(--mono); margin-bottom: .5rem; }
-.notes-panel header b { font: 700 1.6rem var(--serif); }
-.notes-panel > p { color: #d8d0c2; font-size: clamp(.95rem, 1.15vw, 1.2rem); line-height: 1.6; }
 
 .help { display: grid; place-items: center; padding: 1rem; }
 .help-card { position: relative; width: min(42rem, 92vw); background: var(--paper-light); color: var(--ink); padding: clamp(2rem, 5vw, 4rem); }
@@ -253,7 +246,6 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
   .motivation-quote p { font-size: .72rem; }
   .utility-controls button:not(:last-child) { display: none; }
   .overview-grid { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
-  .notes-panel { width: min(92vw, 34rem); }
 }
 
 @media (max-height: 650px) and (min-width: 801px) {
