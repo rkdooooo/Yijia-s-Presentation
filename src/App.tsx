@@ -289,17 +289,18 @@ const slides: SlideDef[] = [
             <p className="eyebrow">WHY THIS DIRECTION</p>
             <h2>I moved deeper into models — and saw more clearly why observation matters</h2>
             <div className="motivation-path">
-              <article><b>01</b><h3>Field grounding</h3><p>How environmental data are actually made</p></article>
-              <article><b>02</b><h3>Spatial + GeoAI</h3><p>How observations are integrated across scale</p></article>
-              <article><b>03</b><h3>Model–data fit</h3><p>How representation shapes what a model can explain</p></article>
+              <article><b>01</b><h3>Field<br />observation</h3></article>
+              <article><b>02</b><h3>GIS +<br />GeoAI</h3></article>
+              <article><b>03</b><h3>Model–data<br />fit</h3></article>
             </div>
+            <p className="motivation-bridge"><b>MY FIT</b> Field judgement <i>+</i> spatial integration</p>
           </div>
+          <figure className="motivation-photo"><ZoomImage src={asset("images/field-forest.png")} alt="Yijia observing a forest environment" /></figure>
           <blockquote className="motivation-quote">
             <span>FROM THE MANIP PROJECT CONTEXT</span>
             <p>“Earth observation systems, and associated land-surface modeling development have been so far poorly adapted to the key structural and functional characteristics of tree-grass ecosystems.”</p>
             <a href={manipUrl} target="_blank" rel="noreferrer">Read source ↗</a>
           </blockquote>
-          <div className="motivation-fit"><b>WHAT I CAN COMBINE</b><p>Field judgement that understands the observations <i>+</i> spatial skills that connect sites, landscapes, and models.</p></div>
         </div>
       </Archive>
     ),
@@ -321,24 +322,6 @@ const slides: SlideDef[] = [
         </div>
         <div className="fit-bridge"><article><b>I BRING</b><p>Field measurement experience · GIScience · Python and modelling workflows</p></article><article><b>I WANT TO DEEPEN</b><p>Ecohydrology · water–carbon dynamics · process-based and physics-guided modelling</p></article></div>
         <a className="project-link" href={projectUrl} target="_blank" rel="noreferrer">View project brief ↗</a>
-      </Archive>
-    ),
-  },
-  {
-    id: "direction",
-    label: "Research direction",
-    title: "The question I want to pursue",
-    notes: [
-      "The question I want to carry forward is how ecosystems regulate carbon and water exchange as environmental conditions change.",
-      "I am especially interested in answering it through a combination of field evidence, cross-site integration, and models that remain physically interpretable.",
-      "Thank you. I would be very happy to discuss where my experience could contribute most, and where you think I should develop further.",
-    ],
-    content: (
-      <Archive number={11} section="research direction">
-        <div className="closing">
-          <div className="closing__copy"><p className="eyebrow">THE DIRECTION I WANT TO PURSUE</p><h2>How do ecosystems regulate carbon and water exchange as environmental conditions change?</h2><div className="blue-rule" /><p>I want to answer this with field evidence, cross-site data integration, and models that remain physically interpretable.</p><b>THANK YOU · I LOOK FORWARD TO DISCUSSING THE PROJECT.</b></div>
-          <figure><ZoomImage src={asset("images/field-forest.png")} alt="Yijia observing a forest environment" /></figure>
-        </div>
       </Archive>
     ),
   },

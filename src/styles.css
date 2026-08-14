@@ -133,20 +133,22 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .project-links i { position: absolute; right: .1rem; top: .52rem; color: var(--blue); font: normal 1.1rem var(--sans); transition: transform .2s ease; }
 .project-links a:hover i, .project-links a:focus-visible i { transform: translate(.18rem, -.18rem); }
 
-.motivation-layout { position: relative; flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr .8fr; grid-template-rows: 1fr auto; gap: clamp(1.2rem, 3vw, 3.5rem); }
-.motivation-story h2 { font-size: clamp(2rem, 3.6vw, 4.3rem); max-width: 16ch; }
-.motivation-path { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 4px solid var(--blue); margin-top: clamp(1rem, 4vh, 3rem); padding-top: clamp(.8rem, 2vh, 1.4rem); }
+.motivation-layout { position: relative; flex: 1; min-height: 0; display: grid; grid-template-columns: 1.15fr .72fr; grid-template-rows: minmax(0, 1fr) auto; gap: clamp(1rem, 2vw, 2.2rem) clamp(1.2rem, 3vw, 3.5rem); }
+.motivation-story { min-height: 0; display: flex; flex-direction: column; }
+.motivation-story h2 { font-size: clamp(2rem, 3.45vw, 4.15rem); max-width: 17ch; margin-bottom: 0; }
+.motivation-path { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 4px solid var(--blue); margin-top: auto; padding-top: clamp(.7rem, 1.6vh, 1.2rem); }
 .motivation-path article { padding-right: clamp(.6rem, 1.4vw, 1.5rem); }
-.motivation-path b, .motivation-fit b { color: var(--blue); font: 700 clamp(.58rem, .76vw, .82rem) var(--mono); }
-.motivation-path h3 { margin: .65rem 0 .35rem; font-size: clamp(.9rem, 1.45vw, 1.55rem); }
-.motivation-path p { max-width: 16ch; color: var(--muted); font-size: clamp(.63rem, .82vw, .9rem); line-height: 1.3; }
-.motivation-quote { align-self: center; margin: 0; padding: clamp(1.5rem, 3vw, 3rem); background: var(--blue); color: var(--paper-light); box-shadow: 14px 15px 0 var(--paper-deep); transform: rotate(.5deg); }
-.motivation-quote span { font: 700 clamp(.56rem, .72vw, .78rem) var(--mono); letter-spacing: .08em; color: #c8d4ff; }
-.motivation-quote p { margin: clamp(1rem, 2.4vh, 2rem) 0; font: clamp(1.05rem, 1.75vw, 1.9rem)/1.3 var(--serif); }
-.motivation-quote a { color: white; font: 700 .66rem var(--mono); text-decoration: none; }
-.motivation-fit { grid-column: 1 / 3; border-top: 1px solid var(--faint); padding-top: clamp(.7rem, 1.6vh, 1.2rem); display: grid; grid-template-columns: 13rem 1fr; align-items: baseline; }
-.motivation-fit p { margin: 0; font: clamp(1rem, 1.6vw, 1.8rem)/1.3 var(--serif); font-weight: 700; }
-.motivation-fit i { color: var(--blue); font-style: normal; padding-inline: .3em; }
+.motivation-path b, .motivation-bridge b { color: var(--blue); font: 700 clamp(.64rem, .78vw, .86rem) var(--mono); }
+.motivation-path h3 { margin: .55rem 0 0; font-size: clamp(1.05rem, 1.7vw, 1.9rem); line-height: 1.02; }
+.motivation-bridge { margin: clamp(.75rem, 1.8vh, 1.2rem) 0 0; font: 700 clamp(1rem, 1.45vw, 1.55rem)/1.2 var(--serif); }
+.motivation-bridge b { margin-right: .7rem; }
+.motivation-bridge i { color: var(--blue); font-style: normal; padding-inline: .2em; }
+.motivation-photo { min-height: 0; margin: 0; overflow: hidden; }
+.motivation-photo img { object-position: center 48%; }
+.motivation-quote { grid-column: 1 / 3; display: grid; grid-template-columns: minmax(9rem, 13rem) 1fr auto; align-items: center; gap: clamp(1rem, 2.2vw, 2.4rem); margin: 0; padding: clamp(.85rem, 1.8vh, 1.35rem) clamp(1rem, 2vw, 2rem); background: var(--blue); color: var(--paper-light); }
+.motivation-quote span { font: 700 clamp(.58rem, .72vw, .78rem)/1.25 var(--mono); letter-spacing: .08em; color: #c8d4ff; }
+.motivation-quote p { margin: 0; font: clamp(.96rem, 1.35vw, 1.5rem)/1.25 var(--serif); }
+.motivation-quote a { color: white; font: 700 .66rem var(--mono); text-decoration: none; white-space: nowrap; }
 
 .fit-columns { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 7vh; }
 .fit-columns article { padding: 0 clamp(1rem, 3vw, 4rem); border-right: 1px solid var(--faint); }
@@ -159,14 +161,6 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .fit-bridge b { color: var(--blue); font: 700 .8rem var(--mono); }
 .fit-bridge p { font: clamp(1rem, 1.65vw, 1.85rem)/1.25 var(--serif); font-weight: 700; }
 .project-link { position: absolute; right: 0; bottom: 1%; color: var(--blue); font: 700 .72rem var(--mono); text-decoration: none; }
-
-.closing { display: grid; grid-template-columns: 60% 40%; gap: 4%; height: 100%; }
-.closing__copy { align-self: center; }
-.closing__copy h2 { font-size: clamp(2.2rem, 4.6vw, 5.7rem); max-width: 16ch; }
-.closing__copy > p:not(.eyebrow) { max-width: 34ch; color: var(--muted); font-size: clamp(.9rem, 1.35vw, 1.5rem); line-height: 1.4; }
-.closing__copy > b { position: absolute; bottom: 1.5%; color: var(--blue); font: 700 clamp(.58rem, .78vw, .84rem) var(--mono); }
-.closing figure { margin: 0; height: 100%; overflow: hidden; }
-.closing figure img { width: 100%; height: 100%; object-fit: cover; }
 
 .controls { position: fixed; z-index: 20; left: 50%; bottom: 1.15rem; transform: translateX(-50%); display: flex; align-items: center; gap: .25rem; padding: .25rem; background: rgba(30,27,22,.88); color: white; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; box-shadow: 0 9px 30px rgba(0,0,0,.25); backdrop-filter: blur(12px); }
 .controls button { border: 0; background: transparent; color: inherit; min-width: 2.25rem; height: 2.25rem; border-radius: 999px; cursor: pointer; }
@@ -254,11 +248,9 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
   .fit-columns { margin-top: 4vh; }
   .fit-columns article { padding: 0 .8rem; }
   .fit-bridge { gap: 3%; }
-  .motivation-layout { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .motivation-quote { padding: 1rem; }
-  .motivation-quote p { font-size: .84rem; }
-  .motivation-fit { grid-template-columns: 8rem 1fr; }
-  .closing { grid-template-columns: 65% 35%; gap: 2%; }
+  .motivation-layout { grid-template-columns: 1.15fr .7fr; gap: .8rem; }
+  .motivation-quote { grid-template-columns: 7.2rem 1fr auto; gap: .7rem; padding: .7rem; }
+  .motivation-quote p { font-size: .72rem; }
   .utility-controls button:not(:last-child) { display: none; }
   .overview-grid { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
   .notes-panel { width: min(92vw, 34rem); }
