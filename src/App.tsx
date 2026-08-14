@@ -227,7 +227,7 @@ const slides: SlideDef[] = [
           </article>
           <article className="flux-project">
             <div className="flux-project__images"><figure><ZoomImage src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure><figure><ZoomImage src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure></div>
-            <div className="flux-project__copy"><b>PROJECT 02 · AMERIFLUX WETLANDS</b><h3>Eddy-covariance tower operations</h3><p>Maintenance + calibration · CA-DSM + CA-RBM</p></div>
+            <div className="flux-project__copy"><b>PROJECT 02 · COASTAL WETLANDS</b><h3>Eddy-covariance tower operations</h3><p>Maintenance + calibration · CA-DSM + CA-RBM</p></div>
           </article>
         </div>
       </Archive>

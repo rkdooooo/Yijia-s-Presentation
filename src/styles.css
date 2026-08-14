@@ -107,7 +107,7 @@ h2 { font-size: clamp(2rem, 4.35vw, 5rem); line-height: .99; letter-spacing: -.0
 .flux-project__images--chamber { grid-template-columns: 1.25fr .75fr; }
 .flux-project__images figure { min-height: 0; margin: 0; overflow: hidden; }
 .flux-project__images img { width: 100%; height: 100%; object-fit: cover; }
-.flux-project__images--chamber figure:first-child img { object-position: 48% 50%; }
+.flux-project__images--chamber figure:first-child img { object-position: 48% 78%; }
 .flux-project__copy { padding: clamp(.75rem, 1.6vh, 1.15rem) 0 clamp(.65rem, 1.3vh, .95rem); }
 .flux-project__copy > b { display: block; margin-bottom: .42rem; color: var(--blue); font: 700 clamp(.58rem, .7vw, .76rem)/1.1 var(--sans); letter-spacing: .055em; }
 .flux-project__copy h3 { margin: 0 0 .42rem; font: 700 clamp(1rem, 1.45vw, 1.65rem)/1.06 var(--sans); letter-spacing: -.025em; }
