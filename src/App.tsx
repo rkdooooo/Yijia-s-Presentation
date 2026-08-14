@@ -28,7 +28,6 @@ function ZoomImage({ src, alt, className, gallery, galleryIndex = 0 }: { src: st
   return (
     <button className={`zoom-image ${className ?? ""}`} onClick={() => requestZoom(gallery ?? [{ src, alt }], gallery ? galleryIndex : 0)} aria-label={`Enlarge image: ${alt}`}>
       <img src={src} alt={alt} />
-      <span>VIEW ↗</span>
     </button>
   );
 }
@@ -223,11 +222,11 @@ const slides: SlideDef[] = [
         <h2>Micrometeorology linked field measurements to carbon and water exchange</h2>
         <div className="flux-gallery">
           <figure className="flux-gallery__main"><ZoomImage src={asset("images/burns-bog.jpeg")} alt="Portable chamber field setup at Burns Bog" /></figure>
-          <figure className="flux-gallery__detail"><ZoomImage src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b>Portable chamber<br />CO₂ and CH₄ fluxes</figcaption></figure>
+          <figure className="flux-gallery__detail"><ZoomImage src={asset("images/chamber.jpeg")} alt="Portable chamber measurement" /><figcaption><b>PLOT SCALE</b><span>Portable chamber</span><span>CO₂ + CH₄ fluxes</span></figcaption></figure>
           <figure><ZoomImage src={asset("images/tower-dsm.jpeg")} alt="Maintenance work at the CA-DSM AmeriFlux site" /></figure>
           <figure><ZoomImage src={asset("images/tower-rbm.jpeg")} alt="CA-RBM AmeriFlux wetland site" /></figure>
         </div>
-        <div className="flux-caption"><p>Hands-on exposure to flux measurements, instrument maintenance, calibration, and quality control.</p><p><b>ECOSYSTEM SCALE</b>Eddy-covariance systems · CA-DSM and CA-RBM</p></div>
+        <div className="flux-caption"><p><b>FIELD PRACTICE</b>Instrument setup · maintenance · calibration · quality control</p><p><b>ECOSYSTEM SCALE</b>Eddy covariance · CA-DSM + CA-RBM</p></div>
       </Archive>
     ),
   },
@@ -244,7 +243,7 @@ const slides: SlideDef[] = [
       <Archive number={7} section="earth-system modelling">
         <h2>CESM2 taught me to test environmental change at Earth-system scale</h2>
         <div className="cesm-layout">
-          <div className="cesm-copy"><p className="eyebrow">A*STAR · FLOATING PHOTOVOLTAICS</p><h3>Community Earth System Model version 2 (CESM2)</h3><p>Coupled atmosphere–ocean simulations<br />HPC workflows and sensitivity experiments<br />Physical and biogeochemical responses</p><blockquote>I learned to move from a physical intervention to model configuration, diagnostics, and mechanism-based interpretation.</blockquote></div>
+          <div className="cesm-copy"><p className="eyebrow">A*STAR · FLOATING PHOTOVOLTAICS</p><h3>Community Earth System Model version 2 (CESM2)</h3><div className="cesm-methods"><span>Coupled atmosphere–ocean simulations</span><span>HPC workflows + sensitivity experiments</span><span>Physical + biogeochemical diagnostics</span></div><p className="cesm-takeaway"><b>PROCESS LOGIC</b>From physical intervention to model setup, diagnostics, and mechanism.</p></div>
           <figure className="cesm-map"><ZoomImage src={asset("images/cesm-map.jpeg")} alt="Global maps used in floating photovoltaic simulations" /></figure>
           <figure className="cesm-response"><ZoomImage src={asset("images/cesm-response.png")} alt="Sensitivity of net primary production to floating photovoltaic coverage" /></figure>
           <figure className="cesm-nfix"><ZoomImage src={asset("images/cesm-nfix.jpeg")} alt="CESM2 output map of diazotroph carbon fixation" /></figure>
@@ -423,12 +422,6 @@ export default function App() {
         <button className="controls__count" onClick={() => setOverview(true)} aria-label="Open slide overview"><b>{String(index + 1).padStart(2, "0")}</b><span>/ {String(slides.length).padStart(2, "0")}</span></button>
         <button onClick={next} disabled={index === slides.length - 1} aria-label="Next slide">→</button>
       </nav>
-
-      <div className="utility-controls">
-        <button onClick={() => setOverview(true)} title="Overview (O)">Overview</button>
-        <button onClick={toggleFullscreen} title="Fullscreen (F)">Full screen</button>
-        <button onClick={() => setHelp(true)} title="Keyboard help (H)" aria-label="Keyboard help">?</button>
-      </div>
 
       <div className="progress" aria-hidden="true"><i style={{ width: `${((index + 1) / slides.length) * 100}%` }} /></div>
 
